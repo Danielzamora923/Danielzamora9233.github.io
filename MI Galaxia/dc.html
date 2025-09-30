@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Constelaciones para Priscila</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow: hidden;
+      background: radial-gradient(circle at center, #0d1b2a, #000000);
+      font-family: 'Segoe UI', sans-serif;
+      color: white;
+    }
+
+    canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 0;
+    }
+
+    #mensaje {
+      position: absolute;
+      top: 5%;
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+      z-index: 2;
+    }
+
+    #mensaje h1 {
+      font-size: 2.5em;
+      color: #ffccff;
+      text-shadow: 0 0 15px #ff99cc;
+    }
+
+    #frase-container {
+      margin-top: 20px;
+      font-size: 1.2em;
+      color: #e0e0ff;
+      min-height: 60px;
+    }
+
+    .boton {
+      margin-top: 20px;
+      padding: 12px 24px;
+      background-color: #ffffff22;
+      border: 1px solid #ff99cc;
+      color: #ffccff;
+      cursor: pointer;
+      border-radius: 10px;
+      font-size: 1em;
+      transition: background 0.3s;
+    }
+
+    .boton:hover {
+      background-color: #ff99cc33;
+    }
+
+    .frase {
+      opacity: 0;
+      animation: aparecerFrase 1.5s ease forwards;
+    }
+
+    @keyframes aparecerFrase {
+      0% {
+        opacity: 0;
+        transform: translateY(20px) scale(0.95);
+        text-shadow: none;
+      }
+      50% {
+        opacity: 1;
+        transform: translateY(0px) scale(1);
+        text-shadow: 0 0 10px #ff99cc;
+      }
+      100% {
+        opacity: 1;
+      }
+    }
+
+    .fugaz {
+      position: absolute;
+      width: 2px;
+      height: 80px;
+      background: linear-gradient(to bottom, white, transparent);
+      animation: cruzar 2s linear;
+      z-index: 1;
+    }
+
+    @keyframes cruzar {
+      from {
+        top: -100px;
+        left: 100%;
+        opacity: 1;
+      }
+      to {
+        top: 100%;
+        left: -100px;
+        opacity: 0;
+      }
+    }
+
+    .corazon {
+      position: absolute;
+      font-size: 1.5em;
+      animation: flotar 2s ease-out forwards;
+      color: #ff99cc;
+      z-index: 3;
+    }
+
+    @keyframes flotar {
+      0% {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-100px) scale(1.5);
+        opacity: 0;
+      }
+    }
+
+    #final {
+      display: none;
+      position: absolute;
+      bottom: 10%;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 1.5em;
+      color: #ffccff;
+      text-shadow: 0 0 10px #ff99cc;
+      animation: aparecerFrase 2s ease forwards;
+      z-index: 2;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="estrellas"></canvas>
+
+  <div id="mensaje">
+    <h1>Te quiero, Priscila 🌌</h1>
+    <div id="frase-container"></div>
+    <button class="boton" onclick="mostrarFrase()">PRECIONA SI QUIERES SABER LO ESPECIAL QUE ERES PARA MI</button>
+  </div>
+
+  <div id="final">Y aún así, todo esto es solo una pequeña parte de lo que siento por ti 💖</div>
+
+  <script>
+    // Fondo de estrellas animadas
+    const canvas = document.getElementById('estrellas');
+    const ctx = canvas.getContext('2d');
+    let estrellas = [];
+
+    function ajustarTamaño() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+
+    window.addEventListener('resize', ajustarTamaño);
+    ajustarTamaño();
+
+    for (let i = 0; i < 300; i++) {
+      estrellas.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        radio: Math.random() * 1.5 + 0.5,
+        velocidad: Math.random() * 0.3 + 0.1
+      });
+    }
+
+    function dibujarEstrellas() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (let estrella of estrellas) {
+        ctx.beginPath();
+        ctx.arc(estrella.x, estrella.y, estrella.radio, 0, Math.PI * 2);
+        ctx.fillStyle = 'white';
+        ctx.shadowColor = '#fff';
+        ctx.shadowBlur = 8;
+        ctx.fill();
+        estrella.y += estrella.velocidad;
+        if (estrella.y > canvas.height) estrella.y = 0;
+      }
+      requestAnimationFrame(dibujarEstrellas);
+    }
+
+    dibujarEstrellas();
+
+    // Estrellas fugaces continuas
+    setInterval(() => {
+      const fugaz = document.createElement("div");
+      fugaz.className = "fugaz";
+      fugaz.style.left = Math.random() * window.innerWidth + "px";
+      document.body.appendChild(fugaz);
+      setTimeout(() => fugaz.remove(), 2000);
+    }, 3000);
+
+    // Frases alineadas como constelaciones
+    const frases = [
+      "Tu sonrisa tiene más luz que mil estrellas.",
+      "Eres mi constelación favorita.",
+      "Cada rincón de esta galaxia me recuerda a ti.",
+      "Tu voz es la melodía que guía mi universo.",
+      "Si pudiera regalarte una estrella por cada pensamiento bonito que tengo de ti, ya tendrías tu propia galaxia.",
+      "Eres el centro de mi órbita emocional.",
+      "No hay espacio más infinito que lo que siento por ti.",
+      "Tu ternura es más poderosa que la gravedad.",
+      "Esta galaxia gira por lo hermosa que eres.",
+      "Gracias por existir en mi universo.",
+      "Tu presencia convierte el vacío en luz.",
+      "Cada latido mío vibra con tu nombre.",
+      "Eres el poema que el universo escribió para mí.",
+      "Tus ojos tienen más profundidad que cualquier galaxia.",
+      "Mi amor por ti no conoce fronteras cósmicas.",
+      "Eres el suspiro que el cielo me regaló.",
+      "Contigo, incluso el silencio brilla.",
+      "Tu amor es mi estrella polar.",
+      "Eres el eclipse perfecto en mi universo.",
+      "Nada brilla más que tú en mi cielo interior."
+    ];
+
+    let fraseActual = 0;
+    const contenedor = document.getElementById("frase-container");
+    const final = document.getElementById("final");
+
+    function mostrarFrase() {
+      contenedor.innerHTML = "";
+      const frase = document.createElement("div");
+      frase.className = "frase";
+      frase.textContent = frases[fraseActual];
+      contenedor.appendChild(frase);
+
+      // Corazón flotante
+      const corazon = document.createElement("div");
+      corazon.className = "corazon";
+      corazon.textContent = "💖";
+      corazon.style.left = Math.random() * window.innerWidth + "px";
+      corazon.style.top = (window.innerHeight - 100) + "px";
+      document.body.appendChild(corazon);
+      setTimeout(() => corazon.remove(), 2000);
+
+      fraseActual++;
+      if (fraseActual === frases.length) {
+        final.style.display = "block";
+      }
+    }
+  </script>
+</body>
+</html>
